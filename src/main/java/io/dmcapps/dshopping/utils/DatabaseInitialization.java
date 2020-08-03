@@ -23,13 +23,13 @@ import io.quarkus.runtime.LaunchMode;
 
 public class DatabaseInitialization {
 
+    private static final int BATCH = 100;
+
     private static final Logger LOGGER = Logger.getLogger(
             DatabaseInitialization.class);
 
     public static void mongoDBInitialize(String profile) {
         LOGGER.info("Launch mode: " + LaunchMode.current());
-        LOGGER.info("Working Directory = " + 
-                System.getProperty("user.dir"));
 
         String path = buildRootPath(profile);
         String fileType = "json";
@@ -49,7 +49,6 @@ public class DatabaseInitialization {
     private static void refillMongoCollection(MongoCollection<Document> collection, CollectionTuple<String, File> collectionFileInfo){
 
         int count = 0;
-        int batch = 100;
 
         List<InsertOneModel<Document>> docs = new ArrayList<>();
 
@@ -61,12 +60,12 @@ public class DatabaseInitialization {
                 docs.add(new InsertOneModel<>(
                         Document.parse(line)));
                 count++;
-                if (count == batch) {
+                if (count == BATCH) {
                     collection.bulkWrite(
                         docs, 
                         new BulkWriteOptions()
                             .ordered(false));
-                    LOGGER.info("\"" + collectionFileInfo.name + "-import.json\" - Number of New Document(s): " + batch);  
+                    LOGGER.info("\"" + collectionFileInfo.name + "-import.json\" - Number of New Document(s): " + BATCH);  
                     docs.clear();
                     count = 0;
                 }

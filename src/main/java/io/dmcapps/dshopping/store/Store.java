@@ -15,7 +15,7 @@ import io.dmcapps.dshopping.store.address.Address;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
 
-@MongoEntity(collection = "store")
+@MongoEntity(collection = "stores")
 public class Store extends PanacheMongoEntityBase {
     
     private static final Logger LOGGER = Logger.getLogger(
@@ -23,13 +23,13 @@ public class Store extends PanacheMongoEntityBase {
 
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
-    public String id;
+    public ObjectId id;
     public String name;
     public String email;
     public String mobile;
     public Address address;
-    public Instant date_created;
-    public Instant date_updated;
+    public Instant dateCreated;
+    public Instant dateUpdated;
 
 
     @Override

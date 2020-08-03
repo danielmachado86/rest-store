@@ -10,9 +10,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 
 @ApplicationScoped
-class ProductApplicationLifeCycle {
+class StoreApplicationLifeCycle {
 
-    private static final Logger LOGGER = Logger.getLogger(ProductApplicationLifeCycle.class);
+    private static final Logger LOGGER = Logger.getLogger(StoreApplicationLifeCycle.class);
 
     void onStart(@Observes StartupEvent ev) {
         

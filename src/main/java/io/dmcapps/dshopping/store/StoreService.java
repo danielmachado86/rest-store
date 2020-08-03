@@ -3,6 +3,8 @@ package io.dmcapps.dshopping.store;
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
+
 import java.util.List;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
@@ -12,6 +14,23 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 @Transactional(REQUIRED)
 public class StoreService {
 
+
+    @Transactional(SUPPORTS)
+    public List<Store> findNearbyStores(double lon, double lat, int range) {
+
+        return Store.find(String.format(
+            "{'address.location': {" +
+                "'$near': {" +
+                    "'$geometry': {" +
+                        "'type': 'Point'," +
+                        "'coordinates': [%f, %f]}," +
+                        "'$maxDistance': %d" +
+                   "}" +
+                "}" +
+            "}",
+            lon, lat, range))
+            .list();
+    }
 
     @Transactional(SUPPORTS)
     public List<Store> findAllStores() {
