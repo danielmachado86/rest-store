@@ -34,6 +34,6 @@ class StoreApplicationLifeCycle {
     }             
 
     void onStop(@Observes ShutdownEvent ev) {
-        LOGGER.info("The application PRODUCT is stopping...");
+        LOGGER.info("The application STORES is stopping...");
     }
 }
