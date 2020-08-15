@@ -1,5 +1,6 @@
 package io.dmcapps.dshopping.store;
 
+import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -28,10 +29,20 @@ public class StoreResource {
     @Inject
     StoreService service;
 
+    @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Store.class, type = SchemaType.ARRAY)))
+    @APIResponse(responseCode = "204", description = "No stores")
+    @GET
+    public Response getAllStoreStocks() {
+        List<Store> stores = service.findAllStores();
+        LOGGER.debug("Total number of stores " + stores);
+        return Response.ok(stores).build();
+    }
+
     @Operation(summary = "Returns all the stores from the database")
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Store.class, type = SchemaType.ARRAY)))
     @APIResponse(responseCode = "204", description = "No stores")
     @GET
+    @Path("/search")
     public Response getNearByStores(
             @Parameter(description = "longitud", required = true)
             @QueryParam("lon") double lon,
@@ -51,14 +62,15 @@ public class StoreResource {
     @GET
     @Path("/{id}")
     public Response getStore(
-        @Parameter(description = "Store identifier", required = true)
-        @PathParam("id") Long id) {
-        Store store = service.findStoreById(id);
+            @Parameter(description = "Store identifier", required = true)
+            @PathParam("id") String id) {
+        ObjectId objectId = new ObjectId(id);
+        Store store = service.findStoreById(objectId);
         if (store != null) {
-            LOGGER.debug("Found store " + store);
+            LOGGER.info("Found store " + store);
             return Response.ok(store).build();
         } else {
-            LOGGER.debug("No store found with id " + id);
+            LOGGER.info("No store found with id " + objectId);
             return Response.noContent().build();
         }
     }
