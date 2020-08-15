@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class StoreService {
     }
 
     @Transactional(SUPPORTS)
-    public Store findStoreById(Long id) {
+    public Store findStoreById(ObjectId id) {
         return Store.findById(id);
     }
 
