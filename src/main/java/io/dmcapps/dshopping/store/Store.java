@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.jboss.logging.Logger;
 
@@ -21,8 +22,9 @@ public class Store extends PanacheMongoEntityBase {
     private static final Logger LOGGER = Logger.getLogger(
             Store.class);
 
+    @BsonProperty("_id")
     @BsonId
-    @JsonSerialize(using = ToStringSerializer.class)
+    // @JsonSerialize(using = ToStringSerializer.class)
     public ObjectId id;
     public String name;
     public String email;
